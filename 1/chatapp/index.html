@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="src/style.css" /> -->
+    <script type="text/js">
+      console.log("heh1e");
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- <script src="index.js"></script> -->
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const rootDiv = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootDiv);
+
+      function ChatInput() {
+        return (
+          <>
+            <input placeholder="Send a message to chatbot" size="30" />
+            <button>Send</button>
+          </>
+        );
+      }
+
+      function ChatMessage() {
+        return (
+          <div>
+            hello chatbot
+            <img src="me.webp" width="50px" />
+          </div>
+        );
+      }
+
+      const app = (
+        <div>
+          <ChatInput />
+          <ChatMessage />
+        </div>
+      );
+
+      root.render(app);
+    </script>
+  </body>
+</html>
