@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="src/style.css" /> -->
+    <script type="text/js">
+      console.log("heh1e");
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- <script src="index.js"></script> -->
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function ChatInput() {
+        return (
+          <>
+            <input placeholder="Send a message to chatbot" size="30" />
+            <button>Send</button>
+          </>
+        );
+      }
+
+      function ChatMessage({ message, who }) {
+        return (
+          <div>
+            {who == "robot" && <img src={"robot.webp"} width="50px" />}
+            {message}
+            {who == "user" && <img src={"me.webp"} width="50px" />}
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+          <>
+            <ChatInput />
+            <ChatMessage message="hello bot" who="user" />
+            <ChatMessage message="hello! how can i help u?" who="robot" />
+            <ChatMessage message="uno" who="user" />
+            <ChatMessage message="dos" who="robot" />
+          </>
+        );
+      }
+
+      function LoginForm() {
+        return (
+          <>
+            <div>
+              <input placeholder="Email" />
+            </div>
+            <div>
+              <input placeholder="Password" type="password" />
+            </div>
+            <button>Login</button>
+            <button>Signup</button>{" "}
+          </>
+        );
+      }
+
+      function ExcerciseApp() {
+        return (
+          <>
+            <p>"hello, welcome to my website"</p>
+            <LoginForm />
+          </>
+        );
+      }
+
+      function ProductDetails({ name, price, discountedPrice, filename }) {
+        return (
+          <>
+            <img src={filename} width="100px" />
+            <p>{name}</p>
+            <p>
+              {discountedPrice ? (
+                <del>Price: ${price}</del>
+              ) : (
+                <p>Price: ${price}</p>
+              )}
+            </p>
+            {discountedPrice && <p>Discounted price: $ {discountedPrice}</p>}
+            <button>Add to cart</button>
+            <br />
+            <br />
+            <br />
+          </>
+        );
+      }
+
+      function EcommerceApp() {
+        return (
+          <>
+            <ProductDetails
+              name="Cotton socks"
+              price="10.90"
+              discountedPrice="5.45"
+              filename="cotton-socks.png"
+            />
+            <ProductDetails
+              name="Tennis balls"
+              price="6.00"
+              filename="tennis-balls.png"
+            />
+            <ProductDetails
+              name="Plain T-Shirt"
+              price="7.99"
+              filename="plain-t-shirt.png"
+            />
+          </>
+        );
+      }
+
+      const rootDiv = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootDiv);
+      root.render(<EcommerceApp />);
+    </script>
+  </body>
+</html>
