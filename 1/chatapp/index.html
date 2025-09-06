@@ -17,9 +17,6 @@
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      const rootDiv = document.getElementById("root");
-      const root = ReactDOM.createRoot(rootDiv);
-
       function ChatInput() {
         return (
           <>
@@ -29,23 +26,31 @@
         );
       }
 
-      function ChatMessage() {
+      function ChatMessage({ message, who }) {
         return (
           <div>
-            hello chatbot
-            <img src="me.webp" width="50px" />
+            {who == "robot" && <img src={"robot.webp"} width="50px" />}
+            {message}
+            {who == "user" && <img src={"me.webp"} width="50px" />}
           </div>
         );
       }
 
-      const app = (
-        <div>
-          <ChatInput />
-          <ChatMessage />
-        </div>
-      );
+      function App() {
+        return (
+          <>
+            <ChatInput />
+            <ChatMessage message="hello bot" who="user" />
+            <ChatMessage message="hello! how can i help u?" who="robot" />
+            <ChatMessage message="uno" who="user" />
+            <ChatMessage message="dos" who="robot" />
+          </>
+        );
+      }
 
-      root.render(app);
+      const rootDiv = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootDiv);
+      root.render(<App />);
     </script>
   </body>
 </html>
