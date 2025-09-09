@@ -26,13 +26,57 @@
         );
       }
 
-      function ChatMessage({ message, who }) {
+      function ChatMessage({ message, sender }) {
         return (
           <div>
-            {who == "robot" && <img src={"robot.webp"} width="50px" />}
+            {sender == "robot" && <img src={"robot.webp"} width="50px" />}
             {message}
-            {who == "user" && <img src={"me.webp"} width="50px" />}
+            {sender == "user" && <img src={"me.webp"} width="50px" />}
           </div>
+        );
+      }
+
+      function ChatMessages() {
+        const chatMessages = [
+          {
+            message: "hello chatbot",
+            sender: "user",
+            id: "id1",
+          },
+          {
+            message: "hello! how can i help you?",
+            sender: "robot",
+            id: "id2",
+          },
+          {
+            message: "can you tell me todays date?",
+            sender: "user",
+            id: "id3",
+          },
+          {
+            message: "today is Sempember 9",
+            sender: "robot",
+            id: "id4",
+          },
+        ];
+
+        function sendMessage() {
+          console.log("send message");
+          chatMessages.push({
+            message: "test",
+            sender: "user",
+            id: crypto.randomUUID(),
+          });
+          console.log(chatMessages);
+        }
+
+        return (
+          <>
+            <button onClick={sendMessage}>Send message</button>
+            {chatMessages.map(({ message, sender, id }) => (
+              <ChatMessage key={id} message={message} sender={sender} />
+            ))}
+          </>
         );
       }
 
@@ -40,10 +84,7 @@
         return (
           <>
             <ChatInput />
-            <ChatMessage message="hello bot" who="user" />
-            <ChatMessage message="hello! how can i help u?" who="robot" />
-            <ChatMessage message="uno" who="user" />
-            <ChatMessage message="dos" who="robot" />
+            <ChatMessages />
           </>
         );
       }
@@ -118,7 +159,8 @@
 
       const rootDiv = document.getElementById("root");
       const root = ReactDOM.createRoot(rootDiv);
-      root.render(<EcommerceApp />);
+      // root.render(<EcommerceApp />);
+      root.render(<App />);
     </script>
   </body>
 </html>
