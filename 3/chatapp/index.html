@@ -17,24 +17,45 @@
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
-
     <script type="text/babel">
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState("");
+        const [isLoading, setIsLoading] = React.useState(false);
 
         function saveInputText(event) {
           setInputText(event.target.value);
         }
 
-        function sendMessage() {
-          const response = Chatbot.getResponse(inputText);
-          setChatMessages([
-            ...chatMessages,
-            { message: inputText, sender: "user", id: crypto.randomUUID() },
-            { message: response, sender: "robot", id: crypto.randomUUID() },
-          ]);
+        async function sendMessage() {
+          if (isLoading || !inputText) {
+            // skip if message is loading or input is empty
+            return;
+          }
 
+          const userMessage = {
+            message: inputText,
+            sender: "user",
+            id: crypto.randomUUID(),
+          };
+          const tempRobotMessage = {
+            message: "Loading...",
+            sender: "robot",
+            id: crypto.randomUUID(),
+          };
+          setChatMessages((prev) => [...prev, userMessage, tempRobotMessage]);
           setInputText("");
+
+          setIsLoading(true);
+          const response = await Chatbot.getResponseAsync(inputText);
+          setIsLoading(false);
+
+          setChatMessages((prev) =>
+            prev.map((message) =>
+              message.id === tempRobotMessage.id
+                ? { ...message, message: response }
+                : message
+            )
+          );
         }
 
         return (
@@ -44,9 +65,10 @@
               size="30"
               onChange={saveInputText}
               value={inputText}
-              onKeyDown={(event) => {
-                if (event.key == "Enter") sendMessage();
+              onKeyDown={(e) => {
+                if (e.key === "Enter") sendMessage();
               }}
+              autoFocus
             />
             <button onClick={sendMessage}>Send</button>
           </>
@@ -122,78 +144,73 @@
         );
       }
 
-      function LoginForm() {
+      // ---------Excercises------------------
+
+      function Button({ counter, setCounter }) {
+        // const [counter, setCounter] = React.useState(0);
+        const text = counter == 1 ? "time" : "times";
+        return (
+          <button onClick={() => setCounter(counter + 1)}>
+            Clicked {counter} {text}
+          </button>
+        );
+      }
+
+      function CounterApp() {
+        const [counter, setCounter] = React.useState(0);
         return (
           <>
-            <div>
-              <input placeholder="Email" />
-            </div>
-            <div>
-              <input placeholder="Password" type="password" />
-            </div>
-            <button>Login</button>
-            <button>Signup</button>{" "}
+            <Button counter={counter} setCounter={setCounter} />
+            <Button counter={counter} setCounter={setCounter} />
+            <button onClick={() => setCounter(0)}>Reset</button>
           </>
         );
       }
 
-      function ExcerciseApp() {
-        return (
-          <>
-            <p>"hello, welcome to my website"</p>
-            <LoginForm />
-          </>
-        );
-      }
+      function DisplayApp() {
+        const [inputText, setInputText] = React.useState("");
+        const [messages, setMessages] = React.useState([]);
 
-      function ProductDetails({ name, price, discountedPrice, filename }) {
-        return (
-          <>
-            <img src={filename} width="100px" />
-            <p>{name}</p>
-            <p>
-              {discountedPrice ? (
-                <del>Price: ${price}</del>
-              ) : (
-                <p>Price: ${price}</p>
-              )}
-            </p>
-            {discountedPrice && <p>Discounted price: $ {discountedPrice}</p>}
-            <button>Add to cart</button>
-            <br />
-            <br />
-            <br />
-          </>
-        );
-      }
+        function saveInputText(event) {
+          setInputText(event.target.value);
+        }
 
-      function EcommerceApp() {
         return (
           <>
-            <ProductDetails
-              name="Cotton socks"
-              price="10.90"
-              discountedPrice="5.45"
-              filename="cotton-socks.png"
+            <input
+              onChange={(e) => {
+                setInputText(e.target.value);
+              }}
+              placeholder="Enter a name here"
+              value={inputText}
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  setMessages((prev) => {
+                    const updated = [...prev, inputText];
+                    console.log(updated);
+                    setInputText("");
+                    return updated;
+                  });
+                }
+                if (e.key == "Escape") {
+                  setInputText("");
+                }
+              }}
             />
-            <ProductDetails
-              name="Tennis balls"
-              price="6.00"
-              filename="tennis-balls.png"
-            />
-            <ProductDetails
-              name="Plain T-Shirt"
-              price="7.99"
-              filename="plain-t-shirt.png"
-            />
+            <button onClick={() => setInputText("")}>Reset</button>
+            <button onClick={() => setInputText("World")}>Example</button>
+            {messages.map((textValue) => (
+              <p key={crypto.randomUUID()}>Hello {textValue}</p>
+            ))}
           </>
         );
       }
 
       const rootDiv = document.getElementById("root");
       const root = ReactDOM.createRoot(rootDiv);
-      // root.render(<EcommerceApp />);
       root.render(<App />);
+      // root.render(<CounterApp />);
+      // root.render(<DisplayApp />);
     </script>
   </body>
 </html>
