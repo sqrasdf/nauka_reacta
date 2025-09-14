@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="src/style.css" /> -->
+    <style>
+      .button-app-container {
+        display: flex;
+        justify-self: right;
+      }
+
+      .nice-button-on {
+        background-color: rgb(25, 135, 84);
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+      }
+
+      .nice-button-off {
+        background-color: rgb(220, 53, 69);
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+      }
+
+      .form-app-container {
+        font-family: Arial;
+      }
+
+      .form-app-input {
+        padding: 10px;
+        margin-top: 5px;
+        border-width: 1px;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+
+      .form-app-button {
+        background-color: rgb(0, 123, 255);
+        padding: 15px 10px;
+        margin-top: 15px;
+        margin-right: 5px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+    <script type="text/js">
+    </script>
+  </hea
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script type="text/babel">
+      function ButtonApp() {
+        const [isButtonOn, setIsButtonOn] = React.useState(false);
+
+        return (
+          <div
+            className="button-app-container"
+            onClick={() => setIsButtonOn(!isButtonOn)}
+          >
+            <button
+              className={isButtonOn ? "nice-button-on" : "nice-button-off"}
+            >
+              {isButtonOn ? "ON" : "OFF"}
+            </button>
+          </div>
+        );
+      }
+
+      function FormApp() {
+        const [showPassword, setShowPassword] = React.useState(false);
+        return (
+          <>
+            <div className="form-app-container">
+              <p>Hello, welcome to my website</p>
+              <div>
+                <input className="form-app-input" placeholder="Email" />
+              </div>
+              <div>
+                <input
+                  className="form-app-input"
+                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
+                />
+                <button
+                  className="show-password-button"
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                  }}
+                >
+                  Show password
+                </button>
+              </div>
+              <button className="form-app-button">Login</button>
+              <button className="form-app-button">Sign up</button>
+            </div>
+          </>
+        );
+      }
+
+      function ClockApp() {
+        const [time, setTime] = React.useState(dayjs().format("HH:mm:ss"));
+
+        React.useEffect(
+          () => {
+            setInterval(() => {
+              setTime(dayjs().format("HH:mm:ss"));
+              console.log("run code");
+            }, 1000);
+          }, []
+        );
+
+        // React.useEffect(() => {
+        //   setInterval(() => {
+        //     setTime(dayjs().format("HH:mm:ss"));
+        //   }, 1000);
+
+        //   // Important: make sure to give React.useEffect()
+        //   // a dependency array of [] so it only runs once!
+        // }, []);
+
+        return "Current time: " + time;
+      }
+
+      const rootDiv = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootDiv);
+      // root.render(<ButtonApp />);
+      // root.render(<FormApp />);
+      root.render(<ClockApp />);
+    </script>
+  </body>
+</html>
