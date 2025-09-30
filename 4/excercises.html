@@ -47,6 +47,45 @@
         border: none;
         border-radius: 5px;
       }
+
+      body {
+        margin: 0px;
+      }
+        .app-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgv(222, 222, 222);
+            height: 100vh;
+        }
+
+        .nice-button-on {
+            background-color: rgb(25, 135, 84);
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+        }
+
+        .nice-button-off {
+            background-color: rgb(220, 53, 69);
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+        }
+
+        .app-container button {
+          background-color: rgb(25, 135, 84);
+          padding: 10px 15px;
+          border-radius: 5px;
+          border: none;
+          color: white;
+          margin-right: 10px;
+          /* height: 50px; 
+          margin-top: auto;
+          margin-bottom: auto; */
+        }
     </style>
     <script type="text/js">
     </script>
@@ -128,14 +167,43 @@
         //   // a dependency array of [] so it only runs once!
         // }, []);
 
-        return "Current time: " + time;
+        // return "Current time: " + time;
+        return (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            nice
+          </div>
+        );
+      }
+
+      function ButtonsApp() {
+        const [isButtonOn, setIsButtonOn] = React.useState(false);
+        const [counter, setCounter] = React.useState(0);
+
+        const buttonRef = React.useRef(null);
+
+        function autoClick() {
+          setInterval(() => {
+            buttonRef.current.click();
+          }, 1000);
+        }
+
+        return (
+            <div className="app-container" >
+                <button ref={buttonRef} onClick={() => {setCounter(counter + 1);}}>Clicked {counter} {counter == 1 ? "time" : "times"}</button>
+                <button onClick={() => {setCounter(0);}}>Reset</button>
+                <button onClick={autoClick}>Auto Click</button>
+            </div>
+        );
       }
 
       const rootDiv = document.getElementById("root");
       const root = ReactDOM.createRoot(rootDiv);
       // root.render(<ButtonApp />);
       // root.render(<FormApp />);
-      root.render(<ClockApp />);
+      // root.render(<ClockApp />);
+      root.render(<ButtonsApp />);
+
+      
     </script>
   </body>
 </html>
